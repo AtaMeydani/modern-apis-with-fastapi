@@ -7,6 +7,10 @@ api = fastapi.FastAPI()
 
 @api.get('/api/calculate')
 def calculate(x: int, y:int, z: Optional[int] = None):
+    if z == 0:
+        return fastapi.responses.JSONResponse(content={'error': 'ERROR: Z cannot be zero.'}, status_code=400)
+    
+    
     value = (x + y)
 
     if z is not None:
