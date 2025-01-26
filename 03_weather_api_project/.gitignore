@@ -1,0 +1,57 @@
+# Python Bytecode  
+__pycache__/  
+*.py[cod]  
+
+# Virtual Environments  
+venv/  
+env/  
+.venv/  
+**/venv/  
+**/env/  
+**/.venv/  
+
+# Egg and development files  
+*.egg-info/  
+*.egg  
+
+# Build files  
+build/  
+dist/  
+*.so  
+*.exe  
+
+# Distribution / Packaging  
+.Python  
+*.whl  
+*.tar.gz  
+
+# Environment variables and secrets  
+.env  
+*.env  
+secrets.yml  
+credentials.json  
+
+# Jupyter Notebook checkpoints  
+.ipynb_checkpoints  
+
+# IDE/Editor settings  
+.vscode/  
+.idea/  
+*.swp  
+*~  
+
+# Coverage and testing files  
+.coverage  
+htmlcov/  
+.pytest_cache/  
+.mypy_cache/  
+nosetests.xml  
+*.cover  
+
+# System files  
+.DS_Store  
+Thumbs.db
+
+
+# config 
+settings.json
