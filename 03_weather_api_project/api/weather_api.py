@@ -1,10 +1,11 @@
-from typing import Optional
+from typing import Optional, List
 from fastapi import Depends
 import fastapi
 from models.validation_error import ValidationError
 
 from models.location import Location
-from services import openweather_service
+from models.reports import Report
+from services import openweather_service, report_service
 
 router = fastapi.APIRouter()
 
@@ -17,3 +18,10 @@ async def weather(loc: Location = Depends(), units: Optional[str] = "metric"):
         )
     except ValidationError as ve:
         return fastapi.Response(content=ve.error_msg, status_code=ve.status_code)
+
+
+@router.get("/api/reports", name="all_reports")
+async def reports_get() -> List[Report]:
+    await report_service.add_report("A", Location(city="Portland"))
+    await report_service.add_report("B", Location(city="NYC"))
+    return await report_service.get_reports()
