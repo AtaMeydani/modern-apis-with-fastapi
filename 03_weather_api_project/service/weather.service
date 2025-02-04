@@ -16,10 +16,25 @@ ExecStart=/apps/venv/bin/gunicorn \
     --error-logfile /apps/logs/weather_api/errors.log \  # Error log file  
     --user apiuser  # Run the service as 'apiuser'  
 
+# Command to execute when the service is reloaded  
+# Sends the HUP (hang-up) signal to the main process, instructing it to reload its configuration  
+ExecReload=/bin/kill -s HUP $MAINPID  
+
+# Determines how to kill processes when the service is stopped or restarted  
+# 'mixed' mode sends the specified KillSignal to the main process and SIGTERM to other processes  
+KillMode=mixed  
+
+# Specifies the time (in seconds) to wait for the service to stop after sending the termination signal  
+# If the service does not stop within this time, it will be forcefully killed  
+TimeoutStopSec=5  
+
+# Creates a private temporary directory for the service  
+# The service will not have access to the global /tmp directory, enhancing security  
+PrivateTmp=true
+
 # Requires systemd version 211 or newer  
 RuntimeDirectory=/apps/app_repo/03_weather_api_project  # Directory for runtime files  
-Restart=always  # Automatically restart the service if it fails  
-KillSignal=SIGQUIT  # Signal to send to the service to stop  
+Restart=always  # Automatically restart the service if it fails   
 Type=notify  # The service uses notification protocol  
 StandardError=syslog  # Send standard error to syslog  
 NotifyAccess=all  # Allow all services to access notifications  
