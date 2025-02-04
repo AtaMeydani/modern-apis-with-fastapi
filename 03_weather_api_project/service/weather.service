@@ -1,0 +1,29 @@
+[Unit]  
+# This section describes the unit and its dependencies  
+Description=Gunicorn Uvicorn Service for Weather Service API  
+After=syslog.target  # Ensure syslog is started before this service  
+
+[Service]  
+# Command to start the Gunicorn server with Uvicorn worker  
+ExecStart=/apps/venv/bin/gunicorn \
+    -b 127.0.0.1:8000 \  # Bind to localhost on port 8000  
+    -w 4 \  # Use 4 worker processes  
+    -k uvicorn.workers.UvicornWorker \  # Specify the Uvicorn worker class  
+    main:app \  # WSGI application entry point  
+    --name weather_svc \  # Name of the service  
+    --chdir /apps/app_repo/03_weather_api_project \  # Change to the specified directory  
+    --access-logfile /apps/logs/weather_api/access.log \  # Access log file  
+    --error-logfile /apps/logs/weather_api/errors.log \  # Error log file  
+    --user apiuser  # Run the service as 'apiuser'  
+
+# Requires systemd version 211 or newer  
+RuntimeDirectory=/apps/app_repo/03_weather_api_project  # Directory for runtime files  
+Restart=always  # Automatically restart the service if it fails  
+KillSignal=SIGQUIT  # Signal to send to the service to stop  
+Type=notify  # The service uses notification protocol  
+StandardError=syslog  # Send standard error to syslog  
+NotifyAccess=all  # Allow all services to access notifications  
+
+[Install]  
+# This section defines installation properties  
+WantedBy=multi-user.target  # Run the service during multi-user runlevels
