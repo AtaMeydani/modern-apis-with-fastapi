@@ -1,0 +1,53 @@
+server {  
+    # Listen on port 80 for HTTP traffic  
+    listen 80;  
+
+    # Approach 1: Specify the server name using a public domain name  
+    # server_name example.com;  # Uncomment and replace with your domain name  
+
+    # Approach 2: Specify the server name using the server's public IP address  
+    # You can access the application directly using this IP instead of a domain name.  
+    server_name 123.45.67.89;  # Replace with your server's public IP address  
+
+    # Disable the display of the Nginx version number  
+    server_tokens off;  
+
+    # Set the character set to UTF-8  
+    charset utf-8;  
+
+    # Configuration for serving static files  
+    location /static {  
+        # Enable gzip compression for static files  
+        gzip on;  
+        gzip_buffers 8 256k;  # Set gzip buffer sizes  
+
+        # Define the directory for static files  
+        alias /path/to/static/files;  # Replace with absolute path to your static files  
+        expires 365d;  # Set caching expiration time to 1 year  
+    }  
+
+    # All other requests will be processed here  
+    location / {  
+        # Try to serve the requested file, fallback to application if not found  
+        try_files $uri @yourapplication;  
+    }  
+
+    # Named location block for handling requests that couldn't be matched  
+    location @yourapplication {  
+        # Enable gzip compression for proxied responses  
+        gzip on;  
+        gzip_buffers 8 256k;  # Set gzip buffer sizes  
+
+        # Forward the request to the backend application server  
+        proxy_pass http://127.0.0.1:8000;  # Replace with the address of your backend server  
+
+        # Preserve the original Host header  
+        proxy_set_header Host $host;  
+
+        # Forward the real IP address of the client  
+        proxy_set_header X-Real-IP $remote_addr;  
+
+        # Forward the original protocol used by the client  
+        proxy_set_header X-Forwarded-Proto $scheme;  
+    }  
+}
