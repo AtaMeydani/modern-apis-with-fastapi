@@ -9,7 +9,7 @@ ExecStart=/apps/venv/bin/gunicorn \
     -b 127.0.0.1:8000 \  # Bind to localhost on port 8000  
     -w 4 \  # Use 4 worker processes  
     -k uvicorn.workers.UvicornWorker \  # Specify the Uvicorn worker class  
-    main:app \  # WSGI application entry point  
+    main:api \  # WSGI application entry point  
     --name weather_svc \  # Name of the service  
     --chdir /apps/app_repo/03_weather_api_project \  # Change to the specified directory  
     --access-logfile /apps/logs/weather_api/access.log \  # Access log file  

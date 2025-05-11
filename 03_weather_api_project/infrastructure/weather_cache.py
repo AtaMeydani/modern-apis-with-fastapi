@@ -12,10 +12,12 @@ def get_weather(
     data: dict = __cache.get(key)
     if not data:
         return None
+
     last = data["time"]
     dt = datetime.datetime.now() - last
     if dt / datetime.timedelta(minutes=60) < lifetime_in_hours:
         return data["value"]
+
     del __cache[key]
     return None
 
@@ -32,8 +34,10 @@ def __create_key(
 ) -> Tuple[str, str, str, str]:
     if not city or not country or not units:
         raise Exception("City, country, and units are required")
+
     if not state:
         state = ""
+
     return (
         city.strip().lower(),
         state.strip().lower(),

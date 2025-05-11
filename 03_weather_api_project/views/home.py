@@ -1,6 +1,7 @@
 import fastapi
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
+
 from services import report_service
 
 templates = Jinja2Templates("templates")

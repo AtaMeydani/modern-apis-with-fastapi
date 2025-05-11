@@ -65,6 +65,7 @@ Follow these steps to set up the Weather App:
 7. **Copy and Enable the Systemd Daemon**:
    ```bash
    cp /apps/app_repo/03_weather_api_project/service/weather.service /etc/systemd/system/
+   systemctl daemon-reload
    systemctl start weather
    systemctl status weather
    systemctl enable weather
